@@ -1,0 +1,5 @@
+entities/RenameMe.class
+facades/FacadeExample.class
+utils/EMF_Creator.class
+rest/ApplicationConfig.class
+rest/RenameMeResource.class
