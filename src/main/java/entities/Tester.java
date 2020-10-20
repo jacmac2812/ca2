@@ -45,9 +45,9 @@ public class Tester {
         cityInfo.addAddress(address);
         
         em.getTransaction().begin();
-        em.persist(person);
+//        em.persist(person);
 //        em.persist(address);
-//        em.persist(cityInfo);
+        em.persist(cityInfo);
         
         em.getTransaction().commit();
         
