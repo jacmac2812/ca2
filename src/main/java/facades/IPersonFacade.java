@@ -26,6 +26,6 @@ public interface IPersonFacade {
   public CityInfosDTO getAllZipcodes();
   public PersonsDTO getAllPersonsHobbies(String hobby);
   public PersonsDTO getAllPersonsCity(String city);
-  public int getHobbyCount(String hobbyName);
+  public long getHobbyCount(String hobbyName);
   public long personCount();
 }

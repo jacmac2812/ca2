@@ -25,7 +25,8 @@ public class PersonDTO {
     List<Phone> phones;
     List<Hobby> hobbies;
 
-    public PersonDTO(String firstName, String lastName, String email, String street, String zipCode, String city, List<Phone> phones, List<Hobby> hobbies) {
+    public PersonDTO(int id, String firstName, String lastName, String email, String street, String zipCode, String city, List<Phone> phones, List<Hobby> hobbies) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

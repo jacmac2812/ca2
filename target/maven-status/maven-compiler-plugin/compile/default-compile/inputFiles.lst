@@ -1,14 +1,17 @@
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/dto/PersonDTO.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/rest/ApplicationConfig.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/entities/CityInfo.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/dto/PersonsDTO.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/facades/FacadeExample.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/entities/Phone.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/entities/Address.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/utils/EMF_Creator.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/entities/Hobby.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/entities/RenameMe.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/facades/IPersonFacade.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/rest/RenameMeResource.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/entities/Person.java
-/Users/jacobsimonsen/Desktop/3. semester/flow 2/ca2backend/src/main/java/facades/PersonFacade.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/utils/EMF_Creator.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/entities/CityInfo.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/dto/CityInfosDTO.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/facades/IPersonFacade.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/dto/CityInfoDTO.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/facades/PersonFacade.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/entities/Phone.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/dto/PersonsDTO.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/rest/PersonResource.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/entities/Hobby.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/rest/RenameMeResource.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/entities/Address.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/entities/RenameMe.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/rest/ApplicationConfig.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/facades/FacadeExample.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/entities/Person.java
+/Users/fh/NetBeansProjects/CA2/ca2backend/src/main/java/dto/PersonDTO.java

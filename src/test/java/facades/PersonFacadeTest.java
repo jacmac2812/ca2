@@ -3,10 +3,10 @@ package facades;
 import dto.PersonDTO;
 import entities.Address;
 import entities.CityInfo;
+import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 import utils.EMF_Creator;
-import entities.RenameMe;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -34,6 +34,9 @@ public class PersonFacadeTest {
     CityInfo ci1;
     CityInfo ci2;
     CityInfo ci3;
+    Hobby h1;
+    Hobby h2;
+    Hobby h3;
 
     public PersonFacadeTest() {
     }
@@ -94,6 +97,14 @@ public class PersonFacadeTest {
             ci2.addAddress(a2);
             ci3.addAddress(a3);
 
+            h1 = new Hobby("Boksning", "Junior");
+            h2 = new Hobby("Svømning", "Junior");
+            h3 = new Hobby("Boksning", "Senior");
+
+            p1.addHobby(h1);
+            p2.addHobby(h2);
+            p3.addHobby(h3);
+
             em.getTransaction().begin();
 
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
@@ -132,10 +143,44 @@ public class PersonFacadeTest {
     public void testGetAllPersons() {
         assertEquals(3, facade.getAllPersons().getAll().size(), "Expect all persons");
     }
-    
+
     @Test
     public void testGetAllZips() {
         assertEquals(3, facade.getAllZipcodes().getAll().size(), "Expect all zipcodes");
     }
 
+    @Test
+    public void testGetAllPersonsHobbies() {
+        assertEquals(2, facade.getAllPersonsHobbies(h1.getName()).getAll().size(), "Expect two hobbies");
+    }
+
+    @Test
+    public void testGetAllPersonsCity() {
+        assertEquals(1, facade.getAllPersonsCity(ci2.getCity()).getAll().size(), "Expect one city");
+    }
+
+    @Test
+    public void testGetHobbyCount() {
+        assertEquals(2, facade.getHobbyCount(h1.getName()), "Excepts two instances of Boksning");
+    }
+
+    @Test
+    public void testAddPerson() {
+        PersonDTO pDTO = facade.addPerson(p1.getFirstName(), p1.getLastName(), p1.getEmail(), p1.getAddress().getStreet(), p1.getAddress().getCityInfo().getZipcode(), p1.getAddress().getCityInfo().getCity(), p1.getPhones(), p1.getHobbies());
+        assertEquals(p1.getFirstName(), pDTO.getFirstName(), "Expect the same firstname");
+        assertEquals(4, facade.personCount(), "Excepts four persons");
+    }
+
+    @Test
+    public void testEditPerson() {
+       PersonDTO pDTO = new PersonDTO(p2.getId(), "John", "Johnsen", "Idiot@hej.dk", "Et sted", "9000", "Aalborg", p2.getPhones(),p2.getHobbies());
+       PersonDTO pDTO2 = facade.editPerson(pDTO);
+       assertEquals(pDTO2.getFirstName(), pDTO.getFirstName(), "Excepts John");
+    }
+
+    @Test
+    public void testDeletePerson() {
+        PersonDTO pDTO = facade.deletePerson(p1.getId());
+        assertEquals(2, facade.personCount(), "Excepts two persons");
+    }
 }

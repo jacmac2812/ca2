@@ -85,6 +85,12 @@ public class Person implements Serializable {
             phone.setPerson(this);
         }
     }
+    
+     public void removePhone(Phone phone){
+        if (phone != null) {
+            this.phones.remove(phone);
+        }
+    }
 
     public void addHobby(Hobby hobby){
         if (hobby != null) {

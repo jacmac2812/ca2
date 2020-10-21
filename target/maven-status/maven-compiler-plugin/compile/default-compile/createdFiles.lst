@@ -6,9 +6,12 @@ entities/Address.class
 facades/FacadeExample.class
 dto/PersonDTO.class
 entities/CityInfo.class
+rest/PersonResource.class
+dto/CityInfoDTO.class
 entities/Person.class
 dto/PersonsDTO.class
 rest/RenameMeResource.class
 entities/Phone.class
+dto/CityInfosDTO.class
 rest/ApplicationConfig.class
 facades/PersonFacade.class
