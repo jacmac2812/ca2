@@ -108,4 +108,8 @@ public class Person implements Serializable {
         this.id = id;
     }
 
+    public List<Hobby> getHobbies() {
+        return hobbies;
+    }
+
 }
