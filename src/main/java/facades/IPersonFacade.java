@@ -5,6 +5,7 @@
  */
 package facades;
 
+import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import entities.CityInfo;
@@ -22,9 +23,9 @@ public interface IPersonFacade {
   public PersonDTO getPerson(String phoneNumber);
   public PersonsDTO getAllPersons();
   public PersonDTO editPerson(PersonDTO p);
-  public CityInfo getAllZipcodes();
-  public PersonsDTO getAllPersonsHobbies();
-  public PersonsDTO getAllPersonsCity();
-  public int getHobbyCount();
+  public CityInfosDTO getAllZipcodes();
+  public PersonsDTO getAllPersonsHobbies(String hobby);
+  public PersonsDTO getAllPersonsCity(String city);
+  public int getHobbyCount(String hobbyName);
   public long personCount();
 }

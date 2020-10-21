@@ -128,4 +128,14 @@ public class PersonFacadeTest {
         assertEquals(p1DTO.getFirstName(), p1.getFirstName(), "Expect the same firstname");
     }
 
+    @Test
+    public void testGetAllPersons() {
+        assertEquals(3, facade.getAllPersons().getAll().size(), "Expect all persons");
+    }
+    
+    @Test
+    public void testGetAllZips() {
+        assertEquals(3, facade.getAllZipcodes().getAll().size(), "Expect all zipcodes");
+    }
+
 }
