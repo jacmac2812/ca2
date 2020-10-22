@@ -122,12 +122,12 @@ public class PersonFacade implements IPersonFacade {
             person.getAddress().getCityInfo().setZipcode(p.getZipCode());
             person.getAddress().getCityInfo().setCity(p.getCity());
 
-            for (Hobby h : p.getHobbies()) {
-                person.addHobby(h);
-            }
-            for (Phone ph : p.getPhones()) {
-                person.addPhone(ph);
-            }
+//            for (Hobby h : p.getHobbies()) {
+//                person.addHobby(h);
+//            }
+//            for (Phone ph : p.getPhones()) {
+//                person.addPhone(ph);
+//            }
             PersonDTO pDTO = new PersonDTO(person);
             return pDTO;
         } finally {

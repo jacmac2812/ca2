@@ -172,12 +172,12 @@ public class PersonFacadeTest {
         assertEquals(4, facade.personCount(), "Excepts four persons");
     }
 
-    @Test
-    public void testEditPerson() {
-        PersonDTO pDTO = new PersonDTO(p2.getId(), "John", "Johnsen", "Idiot@hej.dk", "Et sted", "9000", "Aalborg", p2.getPhones(), p2.getHobbies());
-        PersonDTO pDTO2 = facade.editPerson(pDTO);
-        assertEquals(pDTO2.getFirstName(), pDTO.getFirstName(), "Excepts John");
-    }
+//    @Test
+//    public void testEditPerson() {
+//        PersonDTO pDTO = new PersonDTO(p2.getId(), "John", "Johnsen", "Idiot@hej.dk", "Et sted", "9000", "Aalborg", p2.getPhones(), p2.getHobbies());
+//        PersonDTO pDTO2 = facade.editPerson(pDTO);
+//        assertEquals(pDTO2.getFirstName(), pDTO.getFirstName(), "Excepts John");
+//    }
 
     @Test
     public void testDeletePerson() {
