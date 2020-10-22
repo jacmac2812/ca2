@@ -1,11 +1,16 @@
 package facades;
 
+import dto.HobbiesDTO;
 import dto.PersonDTO;
+import dto.PhoneDTO;
+import dto.PhonesDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import java.util.ArrayList;
+import java.util.List;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -37,6 +42,10 @@ public class PersonFacadeTest {
     Hobby h1;
     Hobby h2;
     Hobby h3;
+    List<Phone> phones;
+    PhonesDTO phonesDTO;
+    List<Hobby> hobbies;
+    HobbiesDTO hobbiesDTO;
 
     public PersonFacadeTest() {
     }
@@ -106,6 +115,17 @@ public class PersonFacadeTest {
             p2.addHobby(h2);
             p3.addHobby(h3);
 
+            phones = new ArrayList<>();
+            phones.add(ph1);
+            phones.add(ph2);
+            phones.add(ph3);
+            phonesDTO = new PhonesDTO(phones);
+
+            hobbies = new ArrayList<>();
+            hobbies.add(h1);
+            hobbies.add(h2);
+            hobbiesDTO = new HobbiesDTO(hobbies);
+
             em.getTransaction().begin();
 
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
@@ -167,17 +187,18 @@ public class PersonFacadeTest {
 
     @Test
     public void testAddPerson() {
-        PersonDTO pDTO = facade.addPerson(p1.getFirstName(), p1.getLastName(), p1.getEmail(), p1.getAddress().getStreet(), p1.getAddress().getCityInfo().getZipcode(), p1.getAddress().getCityInfo().getCity(), p1.getPhones(), p1.getHobbies());
+
+        PersonDTO pDTO = facade.addPerson(p1.getFirstName(), p1.getLastName(), p1.getEmail(), p1.getAddress().getStreet(), p1.getAddress().getCityInfo().getZipcode(), p1.getAddress().getCityInfo().getCity(), phonesDTO, hobbiesDTO);
         assertEquals(p1.getFirstName(), pDTO.getFirstName(), "Expect the same firstname");
         assertEquals(4, facade.personCount(), "Excepts four persons");
     }
 
-//    @Test
-//    public void testEditPerson() {
-//        PersonDTO pDTO = new PersonDTO(p2.getId(), "John", "Johnsen", "Idiot@hej.dk", "Et sted", "9000", "Aalborg", p2.getPhones(), p2.getHobbies());
-//        PersonDTO pDTO2 = facade.editPerson(pDTO);
-//        assertEquals(pDTO2.getFirstName(), pDTO.getFirstName(), "Excepts John");
-//    }
+    @Test
+    public void testEditPerson() {
+        PersonDTO pDTO = new PersonDTO(p2.getId(), "John", "Johnsen", "Idiot@hej.dk", "Et sted", "9000", "Aalborg", phonesDTO, hobbiesDTO);
+        PersonDTO pDTO2 = facade.editPerson(pDTO);
+        assertEquals(pDTO2.getFirstName(), pDTO.getFirstName(), "Excepts John");
+    }
 
     @Test
     public void testDeletePerson() {

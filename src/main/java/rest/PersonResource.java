@@ -91,15 +91,15 @@ public class PersonResource {
         return GSON.toJson(ciDTO);
     }
 
-//    @POST
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public String addPerson(String person) {
-//        PersonDTO pDTO = GSON.fromJson(person, PersonDTO.class);
-//        PersonDTO pAdded
-//                = FACADE.addPerson(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getEmail(), pDTO.getStreet(), pDTO.getZipCode(), pDTO.getCity(), pDTO.getPhones(), pDTO.getHobbies());
-//        return GSON.toJson(pAdded);
-//    }
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String addPerson(String person) {
+        PersonDTO pDTO = GSON.fromJson(person, PersonDTO.class);
+        PersonDTO pAdded
+                = FACADE.addPerson(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getEmail(), pDTO.getStreet(), pDTO.getZipCode(), pDTO.getCity(), pDTO.getPhones(), pDTO.getHobbies());
+        return GSON.toJson(pAdded);
+    }
 
     @Path("/{id}")
     @PUT

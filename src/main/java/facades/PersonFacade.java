@@ -1,8 +1,12 @@
 package facades;
 
 import dto.CityInfosDTO;
+import dto.HobbiesDTO;
+import dto.HobbyDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
+import dto.PhoneDTO;
+import dto.PhonesDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
@@ -45,7 +49,7 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public PersonDTO addPerson(String firstName, String lastName, String email, String street, String zipCode, String city, List<Phone> phones, List<Hobby> hobbies) {
+    public PersonDTO addPerson(String firstName, String lastName, String email, String street, String zipCode, String city, PhonesDTO phones, HobbiesDTO hobbies) {
         EntityManager em = emf.createEntityManager();
         try {
 
@@ -53,10 +57,12 @@ public class PersonFacade implements IPersonFacade {
             Address a = new Address(street);
             CityInfo ci = new CityInfo(zipCode, city);
 
-            for (Phone ph : phones) {
+            for (PhoneDTO phDTO : phones.getAll()) {
+                Phone ph = new Phone(phDTO.getNumber(), phDTO.getDescription());
                 p.addPhone(ph);
             }
-            for (Hobby h : hobbies) {
+            for (HobbyDTO hDTO : hobbies.getAll()) {
+                Hobby h = new Hobby(hDTO.getName(), hDTO.getDescription());
                 p.addHobby(h);
             }
             a.addPerson(p);
@@ -90,7 +96,7 @@ public class PersonFacade implements IPersonFacade {
 
         try {
             em.getTransaction().begin();
-//            
+            
 //            for(Hobby h : person.getHobbies()){
 //            person.removeHobby(h);
 //            }
@@ -122,12 +128,14 @@ public class PersonFacade implements IPersonFacade {
             person.getAddress().getCityInfo().setZipcode(p.getZipCode());
             person.getAddress().getCityInfo().setCity(p.getCity());
 
-//            for (Hobby h : p.getHobbies()) {
-//                person.addHobby(h);
-//            }
-//            for (Phone ph : p.getPhones()) {
-//                person.addPhone(ph);
-//            }
+            for (HobbyDTO hDTO : p.getHobbies().getAll()) {
+                Hobby h = new Hobby(hDTO.getName(), hDTO.getDescription());
+                person.addHobby(h);
+            }
+            for (PhoneDTO phDTO : p.getPhones().getAll()) {
+                Phone ph = new Phone(phDTO.getNumber(), phDTO.getDescription());
+                person.addPhone(ph);
+            }
             PersonDTO pDTO = new PersonDTO(person);
             return pDTO;
         } finally {

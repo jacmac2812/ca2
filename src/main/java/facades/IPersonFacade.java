@@ -6,8 +6,10 @@
 package facades;
 
 import dto.CityInfosDTO;
+import dto.HobbiesDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
+import dto.PhonesDTO;
 import entities.CityInfo;
 import entities.Hobby;
 import entities.Phone;
@@ -18,7 +20,7 @@ import java.util.List;
  * @author jacobsimonsen
  */
 public interface IPersonFacade {
-  public PersonDTO addPerson(String firstName, String lastName, String email, String street, String zipCode, String city, List<Phone> phones, List<Hobby> hobbies);
+  public PersonDTO addPerson(String firstName, String lastName, String email, String street, String zipCode, String city, PhonesDTO phones, HobbiesDTO hobbies);
   public PersonDTO deletePerson(int id);
   public PersonDTO getPerson(String phoneNumber);
   public PersonsDTO getAllPersons();
