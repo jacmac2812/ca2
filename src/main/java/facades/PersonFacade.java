@@ -49,19 +49,19 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public PersonDTO addPerson(String firstName, String lastName, String email, String street, String zipCode, String city, PhonesDTO phones, HobbiesDTO hobbies) {
+    public PersonDTO addPerson(String firstName, String lastName, String email, String street, String zipCode, String city, List<PhoneDTO> phones, List<HobbyDTO> hobbies) {
         EntityManager em = emf.createEntityManager();
         try {
 
             Person p = new Person(firstName, lastName, email);
             Address a = new Address(street);
-            CityInfo ci = new CityInfo(zipCode, city);
+            
 
-            for (PhoneDTO phDTO : phones.getAll()) {
+            for (PhoneDTO phDTO : phones) {
                 Phone ph = new Phone(phDTO.getNumber(), phDTO.getDescription());
                 p.addPhone(ph);
             }
-            for (HobbyDTO hDTO : hobbies.getAll()) {
+            for (HobbyDTO hDTO : hobbies) {
                 Hobby h = new Hobby(hDTO.getName(), hDTO.getDescription());
                 p.addHobby(h);
             }
@@ -71,12 +71,14 @@ public class PersonFacade implements IPersonFacade {
             TypedQuery<CityInfo> query
                     = em.createQuery("SELECT z FROM CityInfo z WHERE z.zipcode =:zipCode", CityInfo.class);
             query.setParameter("zipCode", zipCode);
-            CityInfo cityInfo = query.getSingleResult();
+            List<CityInfo> cityInfos = query.getResultList();
 
-            if (cityInfo != null) {
-                cityInfo.addAddress(a);
-                em.persist(cityInfo);
+            if (cityInfos.size() > 0) {
+                CityInfo ci2 = cityInfos.get(0);
+                ci2.addAddress(a);
+                em.persist(ci2);
             } else {
+                CityInfo ci = new CityInfo(zipCode, city);
                 ci.addAddress(a);
                 em.persist(ci);
             }
@@ -128,11 +130,11 @@ public class PersonFacade implements IPersonFacade {
             person.getAddress().getCityInfo().setZipcode(p.getZipCode());
             person.getAddress().getCityInfo().setCity(p.getCity());
 
-            for (HobbyDTO hDTO : p.getHobbies().getAll()) {
+            for (HobbyDTO hDTO : p.getHobbies()) {
                 Hobby h = new Hobby(hDTO.getName(), hDTO.getDescription());
                 person.addHobby(h);
             }
-            for (PhoneDTO phDTO : p.getPhones().getAll()) {
+            for (PhoneDTO phDTO : p.getPhones()) {
                 Phone ph = new Phone(phDTO.getNumber(), phDTO.getDescription());
                 person.addPhone(ph);
             }

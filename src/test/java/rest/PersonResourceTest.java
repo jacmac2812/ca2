@@ -186,7 +186,6 @@ public class PersonResourceTest {
                 .body("count", equalTo(3));
     }
 
-    @Disabled
     @Test
     public void testGetAllPersons() throws Exception {
         List<PersonDTO> personsDTO;
@@ -206,7 +205,6 @@ public class PersonResourceTest {
 
     }
 
-    @Disabled
     @Test
     public void testGetPerson() throws Exception {
         given()

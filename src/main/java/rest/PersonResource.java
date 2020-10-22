@@ -2,12 +2,16 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
+import dto.PhoneDTO;
 import utils.EMF_Creator;
 import facades.FacadeExample;
 import facades.PersonFacade;
+import java.lang.reflect.Type;
+import java.util.Collection;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -95,6 +99,8 @@ public class PersonResource {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public String addPerson(String person) {
+//        Type collectionType = new TypeToken<Collection<PhoneDTO>>(){}.getType();
+//        Collection<PhoneDTO> phDTOs = GSON.fromJson(person, collectionType);
         PersonDTO pDTO = GSON.fromJson(person, PersonDTO.class);
         PersonDTO pAdded
                 = FACADE.addPerson(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getEmail(), pDTO.getStreet(), pDTO.getZipCode(), pDTO.getCity(), pDTO.getPhones(), pDTO.getHobbies());
