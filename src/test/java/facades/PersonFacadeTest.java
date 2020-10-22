@@ -53,6 +53,7 @@ public class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
@@ -173,9 +174,9 @@ public class PersonFacadeTest {
 
     @Test
     public void testEditPerson() {
-       PersonDTO pDTO = new PersonDTO(p2.getId(), "John", "Johnsen", "Idiot@hej.dk", "Et sted", "9000", "Aalborg", p2.getPhones(),p2.getHobbies());
-       PersonDTO pDTO2 = facade.editPerson(pDTO);
-       assertEquals(pDTO2.getFirstName(), pDTO.getFirstName(), "Excepts John");
+        PersonDTO pDTO = new PersonDTO(p2.getId(), "John", "Johnsen", "Idiot@hej.dk", "Et sted", "9000", "Aalborg", p2.getPhones(), p2.getHobbies());
+        PersonDTO pDTO2 = facade.editPerson(pDTO);
+        assertEquals(pDTO2.getFirstName(), pDTO.getFirstName(), "Excepts John");
     }
 
     @Test

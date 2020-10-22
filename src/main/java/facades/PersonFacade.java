@@ -214,9 +214,9 @@ public class PersonFacade implements IPersonFacade {
     public long getHobbyCount(String hobbyName) {
         EntityManager em = emf.createEntityManager();
         try {
-            Query PersonCount = em.createQuery("SELECT COUNT(p) FROM Person p JOIN p.hobbies h WHERE h.name=:hobbyName");
-            PersonCount.setParameter("hobbyName", hobbyName);
-            long result = (long) PersonCount.getSingleResult();
+            Query personCount = em.createQuery("SELECT COUNT(p) FROM Person p JOIN p.hobbies h WHERE h.name=:hobbyName");
+            personCount.setParameter("hobbyName", hobbyName);
+            long result = (long) personCount.getSingleResult();
             return result;
         } finally {
             em.close();

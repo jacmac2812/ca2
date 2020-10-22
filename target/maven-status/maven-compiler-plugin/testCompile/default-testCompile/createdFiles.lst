@@ -1,3 +1,4 @@
-facades/PersonFacadeTest.class
-rest/RenameMeResourceTest.class
-facades/FacadeExampleTest.class
+facades\FacadeExampleTest.class
+facades\PersonFacadeTest.class
+rest\RenameMeResourceTest.class
+rest\PersonResourceTest.class

@@ -9,12 +9,14 @@ import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
  * @author jacobsimonsen
  */
 public class PersonDTO {
+
     private int id;
     private String firstName;
     private String lastName;
@@ -37,8 +39,6 @@ public class PersonDTO {
         this.hobbies = hobbies;
     }
 
-
-
     public PersonDTO(Person person) {
         this.id = person.getId();
         this.firstName = person.getFirstName();
@@ -50,6 +50,54 @@ public class PersonDTO {
         this.phones = person.getPhones();
         this.hobbies = person.getHobbies();
 
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PersonDTO other = (PersonDTO) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.firstName, other.firstName)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastName, other.lastName)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.street, other.street)) {
+            return false;
+        }
+        if (!Objects.equals(this.zipCode, other.zipCode)) {
+            return false;
+        }
+        if (!Objects.equals(this.city, other.city)) {
+            return false;
+        }
+        if (!Objects.equals(this.phones, other.phones)) {
+            return false;
+        }
+        if (!Objects.equals(this.hobbies, other.hobbies)) {
+            return false;
+        }
+        return true;
     }
 
     public int getId() {
@@ -123,6 +171,5 @@ public class PersonDTO {
     public void setHobbies(List<Hobby> hobbies) {
         this.hobbies = hobbies;
     }
-    
-    
+
 }
