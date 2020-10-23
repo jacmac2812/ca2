@@ -19,6 +19,7 @@ import exceptions.PersonNotFoundException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -148,7 +149,7 @@ public class PersonFacade implements IPersonFacade {
         try {
             Person person = em.find(Person.class, p.getId());
             if (person == null) {
-                throw new PersonNotFoundException("Could not delete. Person not found");
+                throw new PersonNotFoundException("Could not find person");
             } else {
 
                 person.setFirstName(p.getFirstName());
@@ -184,12 +185,11 @@ public class PersonFacade implements IPersonFacade {
                     = em.createQuery("SELECT p FROM Person p JOIN p.phones ph WHERE ph.number = :phoneNumber", Person.class);
             query.setParameter("phoneNumber", phoneNumber);
             Person p = query.getSingleResult();
-            if (p == null) {
-                throw new PersonNotFoundException("Could not find person");
-            } else {
-                return new PersonDTO(p);
-            }
 
+            return new PersonDTO(p);
+
+        } catch (NoResultException ex) {
+            throw new PersonNotFoundException("Could not find person");
         } finally {
             em.close();
         }
@@ -232,7 +232,7 @@ public class PersonFacade implements IPersonFacade {
                     = em.createQuery("SELECT p FROM Person p JOIN p.hobbies h WHERE h.name =:hobby", Person.class);
             query.setParameter("hobby", hobby);
             List<Person> personEntities = query.getResultList();
-            if (personEntities == null) {
+            if (personEntities.isEmpty()) {
                 throw new HobbyNotFoundException("Could not find any persons with the given hobby");
             } else {
                 PersonsDTO all = new PersonsDTO(personEntities);
@@ -252,7 +252,7 @@ public class PersonFacade implements IPersonFacade {
                     = em.createQuery("SELECT p FROM Person p JOIN p.address a JOIN a.cityInfo ci WHERE ci.city =:city", Person.class);
             query.setParameter("city", city);
             List<Person> personEntities = query.getResultList();
-            if (personEntities == null) {
+            if (personEntities.isEmpty()) {
                 throw new CityNotFoundException("Could not find any persons living in the given city");
             } else {
                 PersonsDTO all = new PersonsDTO(personEntities);

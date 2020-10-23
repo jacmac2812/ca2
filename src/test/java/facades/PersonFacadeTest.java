@@ -3,6 +3,7 @@ package facades;
 import dto.HobbiesDTO;
 import dto.HobbyDTO;
 import dto.PersonDTO;
+import dto.PersonsDTO;
 import dto.PhoneDTO;
 import dto.PhonesDTO;
 import entities.Address;
@@ -171,6 +172,16 @@ public class PersonFacadeTest {
         assertEquals(p1DTO.getFirstName(), p1.getFirstName(), "Expect the same firstname");
     }
 
+    @Test()
+    public void testGetPersonException() {
+        try {
+            PersonDTO p1DTO = facade.getPerson("999"); //Expect the exception here
+        } catch (PersonNotFoundException ex) {
+            assertEquals("Could not find person", ex.getMessage());
+        }
+
+    }
+
     @Test
     public void testGetAllPersons() {
         assertEquals(3, facade.getAllPersons().getAll().size(), "Expect all persons");
@@ -187,8 +198,26 @@ public class PersonFacadeTest {
     }
 
     @Test
+    public void testGetAllPersonsHobbiesException() {
+        try {
+            PersonsDTO personDTOs = facade.getAllPersonsHobbies("Skak");
+        } catch (HobbyNotFoundException ex) {
+            assertEquals("Could not find any persons with the given hobby", ex.getMessage());
+        }
+    }
+
+    @Test
     public void testGetAllPersonsCity() throws CityNotFoundException {
         assertEquals(1, facade.getAllPersonsCity(ci2.getCity()).getAll().size(), "Expect one city");
+    }
+
+    @Test
+    public void testGetAllPersonsCityException() {
+        try {
+            PersonsDTO personDTOs = facade.getAllPersonsCity("Svalbard");
+        } catch (CityNotFoundException ex) {
+            assertEquals("Could not find any persons living in the given city", ex.getMessage());
+        }
     }
 
     @Test
@@ -198,10 +227,18 @@ public class PersonFacadeTest {
 
     @Test
     public void testAddPerson() throws MissingInputException {
-
         PersonDTO pDTO = facade.addPerson(p1.getFirstName(), p1.getLastName(), p1.getEmail(), p1.getAddress().getStreet(), p1.getAddress().getCityInfo().getZipcode(), p1.getAddress().getCityInfo().getCity(), phonesDTO, hobbiesDTO);
         assertEquals(p1.getFirstName(), pDTO.getFirstName(), "Expect the same firstname");
         assertEquals(4, facade.personCount(), "Excepts four persons");
+    }
+
+    @Test
+    public void testAddPersonException() {
+        try {
+            PersonDTO pDTO = facade.addPerson("", p1.getLastName(), p1.getEmail(), p1.getAddress().getStreet(), p1.getAddress().getCityInfo().getZipcode(), p1.getAddress().getCityInfo().getCity(), phonesDTO, hobbiesDTO);
+        } catch (MissingInputException ex) {
+            assertEquals("First name and/or last name is missing", ex.getMessage());
+        }
     }
 
     @Test
@@ -213,8 +250,40 @@ public class PersonFacadeTest {
     }
 
     @Test
+    public void testEditPersonMissingInputException() throws PersonNotFoundException {
+        try {
+            PersonDTO pDTO = new PersonDTO(p2);
+            pDTO.setEmail("hej");
+            PersonDTO pDTO2 = facade.editPerson(pDTO);
+        } catch (MissingInputException ex) {
+            assertEquals("Email missing and/or does not contain @", ex.getMessage());
+        }
+    }
+    
+    @Test
+    public void testEditPersonPersonNotFoundException() throws MissingInputException {
+        try {
+            PersonDTO pDTO = new PersonDTO(p2);
+            pDTO.setFirstName("John");
+            pDTO.setId(12346);
+            PersonDTO pDTO2 = facade.editPerson(pDTO);
+        } catch (PersonNotFoundException ex) {
+            assertEquals("Could not find person", ex.getMessage());
+        }
+    }
+
+    @Test
     public void testDeletePerson() throws PersonNotFoundException {
         PersonDTO pDTO = facade.deletePerson(p1.getId());
         assertEquals(2, facade.personCount(), "Excepts two persons");
+    }
+    
+    @Test
+    public void testDeletePersonException() {
+        try {
+            PersonDTO pDTO = facade.deletePerson(34523);
+        } catch (PersonNotFoundException ex) {
+            assertEquals("Could not delete. Person not found", ex.getMessage());
+        }
     }
 }

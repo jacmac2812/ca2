@@ -232,6 +232,16 @@ public class PersonResourceTest {
                 .body("lastName", equalTo(p2.getLastName()))
                 .body("email", equalTo(p2.getEmail()));
     }
+    
+    @Test
+    public void testGetPersonException() {
+        given()
+                .contentType("application/json")
+                .get("/persons/" + 999).then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                .body("message", equalTo("Could not find person"));
+    }
 
     @Test
     public void testGetAllPersonsHobbies() throws Exception {
@@ -285,18 +295,8 @@ public class PersonResourceTest {
         CityInfoDTO ci3DTO = new CityInfoDTO(ci3);
 
         assertThat(cityInfosDTO, containsInAnyOrder(ci1DTO, ci2DTO, ci3DTO));
-    }
-
-//    @Test
-//    public void testGetPersonException() {
-//        given()
-//                .contentType("application/json")
-//                .get("/person/" + 999).then()
-//                .assertThat()
-//                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
-//                .body("message", equalTo("No person with provided id found"));
-//    }
-//    
+    }    
+    
     @Test
     public void testAddPerson() throws Exception {
 

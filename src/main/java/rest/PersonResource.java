@@ -12,7 +12,6 @@ import exceptions.HobbyNotFoundException;
 import exceptions.MissingInputException;
 import exceptions.PersonNotFoundException;
 import utils.EMF_Creator;
-import facades.FacadeExample;
 import facades.PersonFacade;
 import java.lang.reflect.Type;
 import java.util.Collection;
