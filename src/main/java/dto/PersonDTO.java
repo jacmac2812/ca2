@@ -8,6 +8,7 @@ package dto;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,20 +48,22 @@ public class PersonDTO {
         this.street = person.getAddress().getStreet();
         this.zipCode = person.getAddress().getCityInfo().getZipcode();
         this.city = person.getAddress().getCityInfo().getCity();
-//        for (Phone ph : person.getPhones()) {
-//            PhoneDTO phDTO = new PhoneDTO(ph);
-//            this.phones.add(phDTO);
-//        }
-//        for (Hobby h : person.getHobbies()) {
-//            HobbyDTO hDTO = new HobbyDTO(h);
-//            this.hobbies.add(hDTO);
-//        }
+        this.phones = new ArrayList<>();
+        for (Phone ph : person.getPhones()) {
+            PhoneDTO phDTO = new PhoneDTO(ph);
+            this.phones.add(phDTO);
+        }
+        this.hobbies = new ArrayList<>();
+        for (Hobby h : person.getHobbies()) {
+            HobbyDTO hDTO = new HobbyDTO(h);
+            this.hobbies.add(hDTO);
+        }
 
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        int hash = 5;
         return hash;
     }
 
@@ -177,7 +180,5 @@ public class PersonDTO {
     public void setHobbies(List<HobbyDTO> hobbies) {
         this.hobbies = hobbies;
     }
-
-    
 
 }

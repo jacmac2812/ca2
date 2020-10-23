@@ -1,6 +1,9 @@
 package rest;
 
+import dto.CityInfoDTO;
+import dto.HobbyDTO;
 import dto.PersonDTO;
+import dto.PhoneDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
@@ -11,6 +14,7 @@ import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,7 +45,7 @@ public class PersonResourceTest {
     private static Person p1;
     private static Person p2;
     private static Person p3;
-    private static    Address a1;
+    private static Address a1;
     private static Address a2;
     private static Address a3;
     private static Phone ph1;
@@ -187,20 +191,32 @@ public class PersonResourceTest {
     }
 
     @Test
+    public void testGetHobbyCount() throws Exception {
+        given()
+                .contentType("application/json")
+                .get("/persons/hobbies/count/" + h3.getName()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("count", equalTo(2));
+    }
+
+    @Test
     public void testGetAllPersons() throws Exception {
         List<PersonDTO> personsDTO;
         personsDTO = given()
                 .contentType("application/json")
                 .when()
                 .get("/persons/all").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
                 .extract().body().jsonPath().getList("all", PersonDTO.class);
 
         assertThat(personsDTO, iterableWithSize(3));
-        
+
         PersonDTO p1DTO = new PersonDTO(p1);
         PersonDTO p2DTO = new PersonDTO(p2);
         PersonDTO p3DTO = new PersonDTO(p3);
-        
+
         assertThat(personsDTO, containsInAnyOrder(p1DTO, p2DTO, p3DTO));
 
     }
@@ -216,7 +232,61 @@ public class PersonResourceTest {
                 .body("lastName", equalTo(p2.getLastName()))
                 .body("email", equalTo(p2.getEmail()));
     }
-    
+
+    @Test
+    public void testGetAllPersonsHobbies() throws Exception {
+        List<PersonDTO> personsDTO;
+        personsDTO = given()
+                .contentType("application/json")
+                .get("/persons/hobbies/" + h1.getName()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .extract().body().jsonPath().getList("all", PersonDTO.class);
+
+        assertThat(personsDTO, iterableWithSize(2));
+
+        PersonDTO p1DTO = new PersonDTO(p1);
+        PersonDTO p3DTO = new PersonDTO(p3);
+
+        assertThat(personsDTO, containsInAnyOrder(p1DTO, p3DTO));
+    }
+
+    @Test
+    public void testGetAllPersonsCity() throws Exception {
+        List<PersonDTO> personsDTO;
+        personsDTO = given()
+                .contentType("application/json")
+                .get("/persons/cities/" + ci2.getCity()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .extract().body().jsonPath().getList("all", PersonDTO.class);
+
+        assertThat(personsDTO, iterableWithSize(1));
+
+        PersonDTO p2DTO = new PersonDTO(p2);
+
+        assertThat(personsDTO, contains(p2DTO));
+    }
+
+    @Test
+    public void testGetAllZipcodes() throws Exception {
+        List<CityInfoDTO> cityInfosDTO;
+        cityInfosDTO = given()
+                .contentType("application/json")
+                .get("/persons/zips/").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .extract().body().jsonPath().getList("all", CityInfoDTO.class);
+
+        assertThat(cityInfosDTO, iterableWithSize(3));
+
+        CityInfoDTO ci1DTO = new CityInfoDTO(ci1);
+        CityInfoDTO ci2DTO = new CityInfoDTO(ci2);
+        CityInfoDTO ci3DTO = new CityInfoDTO(ci3);
+
+        assertThat(cityInfosDTO, containsInAnyOrder(ci1DTO, ci2DTO, ci3DTO));
+    }
+
 //    @Test
 //    public void testGetPersonException() {
 //        given()
@@ -227,22 +297,33 @@ public class PersonResourceTest {
 //                .body("message", equalTo("No person with provided id found"));
 //    }
 //    
-//    @Test
-//    public void testAddPerson() throws Exception {
-//        given()
-//                .contentType("application/json")
-//                .body(new PersonDTO("Klaus", "Guttermand", "75634251", "Landevejen 19", 8765, "Roskilde"))
-//                .when()
-//                .post("person")
-//                .then()
-//                .body("fName", equalTo("Klaus"))
-//                .body("lName", equalTo("Guttermand"))
-//                .body("phone", equalTo("75634251"))
-//                .body("street", equalTo("Landevejen 19"))
-//                .body("zip", equalTo(8765))
-//                .body("city", equalTo("Roskilde"))
-//                .body("id", notNullValue());
-//    }
+    @Test
+    public void testAddPerson() throws Exception {
+
+        Phone phAdd = new Phone("768453621", "Samsung Galaxy A3");
+        PhoneDTO phDTOAdd = new PhoneDTO(phAdd);
+        List<PhoneDTO> phones = new ArrayList<>();
+        phones.add(phDTOAdd);
+
+        Hobby hAdd = new Hobby("Make-up", "Skilled");
+        HobbyDTO hDTOAdd = new HobbyDTO(hAdd);
+        List<HobbyDTO> hobbies = new ArrayList<>();
+        hobbies.add(hDTOAdd);
+
+        given()
+                .contentType("application/json")
+                .body(new PersonDTO(5, "Gurli", "Gris", "gurli@gris.dk", "Bygade 99", "9999", "Tarm", phones, hobbies))
+                .when()
+                .post("persons")
+                .then()
+                .body("firstName", equalTo("Gurli"))
+                .body("lastName", equalTo("Gris"))
+                .body("email", equalTo("gurli@gris.dk"))
+                .body("street", equalTo("Bygade 99"))
+                .body("zipCode", equalTo("9999"))
+                .body("city", equalTo("Tarm"))
+                .body("id", notNullValue());
+    }
 //
 //    @Test
 //    public void testAddPersonException() {
@@ -345,4 +426,3 @@ public class PersonResourceTest {
 //    }
 //
 }
-
