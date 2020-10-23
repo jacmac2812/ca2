@@ -15,6 +15,10 @@ import dto.PhonesDTO;
 import entities.CityInfo;
 import entities.Hobby;
 import entities.Phone;
+import exceptions.CityNotFoundException;
+import exceptions.HobbyNotFoundException;
+import exceptions.MissingInputException;
+import exceptions.PersonNotFoundException;
 import java.util.List;
 
 /**
@@ -22,14 +26,14 @@ import java.util.List;
  * @author jacobsimonsen
  */
 public interface IPersonFacade {
-  public PersonDTO addPerson(String firstName, String lastName, String email, String street, String zipCode, String city, List<PhoneDTO> phones, List<HobbyDTO> hobbies);
-  public PersonDTO deletePerson(int id);
-  public PersonDTO getPerson(String phoneNumber);
+  public PersonDTO addPerson(String firstName, String lastName, String email, String street, String zipCode, String city, List<PhoneDTO> phones, List<HobbyDTO> hobbies) throws MissingInputException;
+  public PersonDTO deletePerson(int id) throws PersonNotFoundException;
+  public PersonDTO getPerson(String phoneNumber) throws PersonNotFoundException;
   public PersonsDTO getAllPersons();
-  public PersonDTO editPerson(PersonDTO p);
+  public PersonDTO editPerson(PersonDTO p) throws MissingInputException, PersonNotFoundException;
   public CityInfosDTO getAllZipcodes();
-  public PersonsDTO getAllPersonsHobbies(String hobby);
-  public PersonsDTO getAllPersonsCity(String city);
-  public long getHobbyCount(String hobbyName);
+  public PersonsDTO getAllPersonsHobbies(String hobby) throws HobbyNotFoundException;
+  public PersonsDTO getAllPersonsCity(String city) throws CityNotFoundException;
+  public long getHobbyCount(String hobbyName) throws HobbyNotFoundException;
   public long personCount();
 }

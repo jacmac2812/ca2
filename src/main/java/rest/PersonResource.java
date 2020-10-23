@@ -7,6 +7,10 @@ import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import dto.PhoneDTO;
+import exceptions.CityNotFoundException;
+import exceptions.HobbyNotFoundException;
+import exceptions.MissingInputException;
+import exceptions.PersonNotFoundException;
 import utils.EMF_Creator;
 import facades.FacadeExample;
 import facades.PersonFacade;
@@ -50,7 +54,7 @@ public class PersonResource {
     @Path("{phoneNumber}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPerson(@PathParam("phoneNumber") String phoneNumber) {
+    public String getPerson(@PathParam("phoneNumber") String phoneNumber) throws PersonNotFoundException {
         PersonDTO pDTO = FACADE.getPerson(phoneNumber);
         return GSON.toJson(pDTO);
     }
@@ -66,7 +70,7 @@ public class PersonResource {
     @Path("hobbies/{hobby}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAllPersonsHobbies(@PathParam("hobby") String hobby) {
+    public String getAllPersonsHobbies(@PathParam("hobby") String hobby) throws HobbyNotFoundException {
         PersonsDTO psDTO = FACADE.getAllPersonsHobbies(hobby);
         return GSON.toJson(psDTO);
     }
@@ -74,7 +78,7 @@ public class PersonResource {
     @Path("cities/{city}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAllPersonsCity(@PathParam("city") String city) {
+    public String getAllPersonsCity(@PathParam("city") String city) throws CityNotFoundException {
         PersonsDTO psDTO = FACADE.getAllPersonsCity(city);
         return GSON.toJson(psDTO);
     }
@@ -82,7 +86,7 @@ public class PersonResource {
     @Path("hobbies/count/{hobby}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getHobbyCount(@PathParam("hobby") String hobby) {
+    public String getHobbyCount(@PathParam("hobby") String hobby) throws HobbyNotFoundException {
         long hobbyCount = FACADE.getHobbyCount(hobby);
         return "{\"count\":" + hobbyCount + "}";
     }
@@ -98,7 +102,7 @@ public class PersonResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public String addPerson(String person) {
+    public String addPerson(String person) throws MissingInputException {
 //        Type collectionType = new TypeToken<Collection<PhoneDTO>>(){}.getType();
 //        Collection<PhoneDTO> phDTOs = GSON.fromJson(person, collectionType);
         PersonDTO pDTO = GSON.fromJson(person, PersonDTO.class);
@@ -111,7 +115,7 @@ public class PersonResource {
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public String editPerson(@PathParam("id") int id, String person) {
+    public String editPerson(@PathParam("id") int id, String person) throws MissingInputException, PersonNotFoundException {
         PersonDTO pDTO = GSON.fromJson(person, PersonDTO.class);
         pDTO.setId(id);
         PersonDTO pEdited = FACADE.editPerson(pDTO);
@@ -121,7 +125,7 @@ public class PersonResource {
     @Path("/{id}")
     @DELETE
     @Produces({MediaType.APPLICATION_JSON})
-    public String deletePerson(@PathParam("id") int id) {
+    public String deletePerson(@PathParam("id") int id) throws PersonNotFoundException {
         PersonDTO pDeleted = FACADE.deletePerson(id);
         return GSON.toJson(pDeleted);
 

@@ -10,6 +10,10 @@ import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import exceptions.CityNotFoundException;
+import exceptions.HobbyNotFoundException;
+import exceptions.MissingInputException;
+import exceptions.PersonNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import utils.EMF_Creator;
@@ -162,7 +166,7 @@ public class PersonFacadeTest {
     }
 
     @Test
-    public void testGetPerson() {
+    public void testGetPerson() throws PersonNotFoundException {
         PersonDTO p1DTO = facade.getPerson(ph1.getNumber());
         assertEquals(p1DTO.getFirstName(), p1.getFirstName(), "Expect the same firstname");
     }
@@ -178,37 +182,38 @@ public class PersonFacadeTest {
     }
 
     @Test
-    public void testGetAllPersonsHobbies() {
+    public void testGetAllPersonsHobbies() throws HobbyNotFoundException {
         assertEquals(2, facade.getAllPersonsHobbies(h1.getName()).getAll().size(), "Expect two hobbies");
     }
 
     @Test
-    public void testGetAllPersonsCity() {
+    public void testGetAllPersonsCity() throws CityNotFoundException {
         assertEquals(1, facade.getAllPersonsCity(ci2.getCity()).getAll().size(), "Expect one city");
     }
 
     @Test
-    public void testGetHobbyCount() {
+    public void testGetHobbyCount() throws HobbyNotFoundException {
         assertEquals(2, facade.getHobbyCount(h1.getName()), "Excepts two instances of Boksning");
     }
 
     @Test
-    public void testAddPerson() {
+    public void testAddPerson() throws MissingInputException {
 
         PersonDTO pDTO = facade.addPerson(p1.getFirstName(), p1.getLastName(), p1.getEmail(), p1.getAddress().getStreet(), p1.getAddress().getCityInfo().getZipcode(), p1.getAddress().getCityInfo().getCity(), phonesDTO, hobbiesDTO);
         assertEquals(p1.getFirstName(), pDTO.getFirstName(), "Expect the same firstname");
         assertEquals(4, facade.personCount(), "Excepts four persons");
     }
 
-//    @Test
-//    public void testEditPerson() {
-//        PersonDTO pDTO = new PersonDTO(p2.getId(), "John", "Johnsen", "Idiot@hej.dk", "Et sted", "9000", "Aalborg", phonesDTO, hobbiesDTO);
-//        PersonDTO pDTO2 = facade.editPerson(pDTO);
-//        assertEquals(pDTO2.getFirstName(), pDTO.getFirstName(), "Excepts John");
-//    }
+    @Test
+    public void testEditPerson() throws MissingInputException, PersonNotFoundException {
+        PersonDTO pDTO = new PersonDTO(p2);
+        pDTO.setFirstName("John");
+        PersonDTO pDTO2 = facade.editPerson(pDTO);
+        assertEquals(pDTO2.getFirstName(), pDTO.getFirstName(), "Excepts John");
+    }
 
     @Test
-    public void testDeletePerson() {
+    public void testDeletePerson() throws PersonNotFoundException {
         PersonDTO pDTO = facade.deletePerson(p1.getId());
         assertEquals(2, facade.personCount(), "Excepts two persons");
     }

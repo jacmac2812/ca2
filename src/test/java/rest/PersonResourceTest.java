@@ -316,6 +316,8 @@ public class PersonResourceTest {
                 .when()
                 .post("persons")
                 .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("firstName", equalTo("Gurli"))
                 .body("lastName", equalTo("Gris"))
                 .body("email", equalTo("gurli@gris.dk"))
@@ -338,25 +340,27 @@ public class PersonResourceTest {
 //                .body("message", equalTo("First name and/or last name is missing"));
 //    }
 //
-//    @Test
-//    public void testEditPerson() throws Exception {
-//        PersonDTO p3DTO = new PersonDTO(p3);
-//        p3DTO.setfName("Bente");
-//
-//        given()
-//                .contentType("application/json")
-//                .body(p3DTO)
-//                .when()
-//                .put("person/" + p3DTO.getId())
-//                .then()
-//                .body("fName", equalTo("Bente"))
-//                .body("lName", equalTo(p3.getLastName()))
-//                .body("phone", equalTo(p3.getPhone()))
-//                .body("street", equalTo(p3.getAddress().getStreet()))
-//                .body("zip", equalTo(p3.getAddress().getZip()))
-//                .body("city", equalTo(p3.getAddress().getCity()))
-//                .body("id", equalTo(p3DTO.getId()));
-//    }
+    @Test
+    public void testEditPerson() throws Exception {
+        PersonDTO p3DTO = new PersonDTO(p3);
+        p3DTO.setFirstName("Morten");
+
+        given()
+                .contentType("application/json")
+                .body(p3DTO)
+                .when()
+                .put("persons/" + p3DTO.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("firstName", equalTo("Morten"))
+                .body("lastName", equalTo(p3.getLastName()))
+                .body("email", equalTo(p3.getEmail()))
+                .body("street", equalTo(p3.getAddress().getStreet()))
+                .body("zipCode", equalTo(p3.getAddress().getCityInfo().getZipcode()))
+                .body("city", equalTo(p3.getAddress().getCityInfo().getCity()))
+                .body("id", equalTo(p3DTO.getId()));
+    }
 //
 //    @Test
 //    public void testEditPersonExceptionNotFound() {
@@ -390,27 +394,26 @@ public class PersonResourceTest {
 //                .body("message", equalTo("First name and/or last name is missing"));
 //    }
 //
-//    @Test
-//    public void testDeletePerson() throws Exception {
-//        PersonDTO p1DTO = new PersonDTO(p1);
-//
-//        given()
-//                .contentType("application/json")
-//                .delete("person/" + p1DTO.getId())
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.OK_200.getStatusCode());
-//
-//        List<PersonDTO> personsDTO;
-//        personsDTO = given()
-//                .contentType("application/json")
-//                .when()
-//                .get("/person/all").then()
-//                .extract().body().jsonPath().getList("all", PersonDTO.class
-//                );
-//
-//        assertThat(personsDTO, iterableWithSize(2));
-//    }
+    @Test
+    public void testDeletePerson() throws Exception {
+        PersonDTO p1DTO = new PersonDTO(p1);
+
+        given()
+                .contentType("application/json")
+                .delete("persons/" + p1DTO.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode());
+
+        List<PersonDTO> personsDTO;
+        personsDTO = given()
+                .contentType("application/json")
+                .when()
+                .get("/persons/all").then()
+                .extract().body().jsonPath().getList("all", PersonDTO.class);
+
+        assertThat(personsDTO, iterableWithSize(2));
+    }
 //
 //    @Test
 //    public void testDeletePersonException() {
