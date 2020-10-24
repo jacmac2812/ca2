@@ -260,6 +260,18 @@ public class PersonResourceTest {
 
         assertThat(personsDTO, containsInAnyOrder(p1DTO, p3DTO));
     }
+    
+    @Test
+    public void testGetAllPersonsHobbiesException() throws Exception {
+        given()
+                .contentType("application/json")
+                .get("/persons/hobbies/" + "skak").then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                .body("message", equalTo("Could not find any persons with the given hobby"));
+
+        
+    }
 
     @Test
     public void testGetAllPersonsCity() throws Exception {
@@ -276,6 +288,18 @@ public class PersonResourceTest {
         PersonDTO p2DTO = new PersonDTO(p2);
 
         assertThat(personsDTO, contains(p2DTO));
+    }
+    
+    @Test
+    public void testGetAllPersonsCityException() throws Exception {
+        given()
+                .contentType("application/json")
+                .get("/persons/cities/" + "svalbard").then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                .body("message", equalTo("Could not find any persons living in the given city"));
+
+        
     }
 
     @Test
@@ -326,20 +350,30 @@ public class PersonResourceTest {
                 .body("city", equalTo("Tarm"))
                 .body("id", notNullValue());
     }
-//
-//    @Test
-//    public void testAddPersonException() {
-//        given()
-//                .contentType("application/json")
-//                .body(new PersonDTO("Klaus", "", "75634251", "Landevejen 19", 8765, "Roskilde"))
-//                .when()
-//                .post("person")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.BAD_REQUEST_400.getStatusCode())
-//                .body("message", equalTo("First name and/or last name is missing"));
-//    }
-//
+    @Test
+    public void testAddPersonException() throws Exception {
+
+        Phone phAdd = new Phone("768453621", "Samsung Galaxy A3");
+        PhoneDTO phDTOAdd = new PhoneDTO(phAdd);
+        List<PhoneDTO> phones = new ArrayList<>();
+        phones.add(phDTOAdd);
+
+        Hobby hAdd = new Hobby("Make-up", "Skilled");
+        HobbyDTO hDTOAdd = new HobbyDTO(hAdd);
+        List<HobbyDTO> hobbies = new ArrayList<>();
+        hobbies.add(hDTOAdd);
+
+        given()
+                .contentType("application/json")
+                .body(new PersonDTO(5, "", "Gris", "gurli@gris.dk", "Bygade 99", "9999", "Tarm", phones, hobbies))
+                .when()
+                .post("persons")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST_400.getStatusCode())
+                .body("message", equalTo("First name and/or last name is missing"));
+    }
+
     @Test
     public void testEditPerson() throws Exception {
         PersonDTO p3DTO = new PersonDTO(p3);
@@ -361,39 +395,39 @@ public class PersonResourceTest {
                 .body("city", equalTo(p3.getAddress().getCityInfo().getCity()))
                 .body("id", equalTo(p3DTO.getId()));
     }
-//
-//    @Test
-//    public void testEditPersonExceptionNotFound() {
-//        PersonDTO p3DTO = new PersonDTO(p3);
-//        p3DTO.setfName("Bente");
-//
-//        given()
-//                .contentType("application/json")
-//                .body(p3DTO)
-//                .when()
-//                .put("person/" + 999)
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
-//                .body("message", equalTo("No person with provided id found"));
-//    }
-//
-//    @Test
-//    public void testEditPersonExceptionMissingInput() {
-//        PersonDTO p3DTO = new PersonDTO(p3);
-//        p3DTO.setfName("");
-//
-//        given()
-//                .contentType("application/json")
-//                .body(p3DTO)
-//                .when()
-//                .put("person/" + p3DTO.getId())
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.BAD_REQUEST_400.getStatusCode())
-//                .body("message", equalTo("First name and/or last name is missing"));
-//    }
-//
+
+    @Test
+    public void testEditPersonExceptionNotFound() {
+        PersonDTO p3DTO = new PersonDTO(p3);
+        p3DTO.setLastName("Larsen");
+
+        given()
+                .contentType("application/json")
+                .body(p3DTO)
+                .when()
+                .put("persons/" + 9999)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                .body("message", equalTo("Could not find person"));
+    }
+
+    @Test
+    public void testEditPersonExceptionMissingInput() {
+        PersonDTO p3DTO = new PersonDTO(p3);
+        p3DTO.setFirstName("");
+
+        given()
+                .contentType("application/json")
+                .body(p3DTO)
+                .when()
+                .put("persons/" + p3DTO.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST_400.getStatusCode())
+                .body("message", equalTo("First name and/or last name is missing"));
+    }
+
     @Test
     public void testDeletePerson() throws Exception {
         PersonDTO p1DTO = new PersonDTO(p1);
@@ -414,18 +448,17 @@ public class PersonResourceTest {
 
         assertThat(personsDTO, iterableWithSize(2));
     }
-//
-//    @Test
-//    public void testDeletePersonException() {
-//        PersonDTO p1DTO = new PersonDTO(p1);
-//
-//        given()
-//                .contentType("application/json")
-//                .delete("person/" + 999)
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
-//                .body("message", equalTo("Could not delete, provided id does not exist"));
-//    }
-//
+
+    @Test
+    public void testDeletePersonException() {
+
+        given()
+                .contentType("application/json")
+                .delete("persons/" + 9999)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                .body("message", equalTo("Could not delete. Person not found"));
+    }
+
 }
