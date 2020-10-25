@@ -167,6 +167,11 @@ public class PersonFacade implements IPersonFacade {
                     Phone ph = new Phone(phDTO.getNumber(), phDTO.getDescription());
                     person.addPhone(ph);
                 }
+                
+                em.getTransaction().begin();
+                    em.persist(person);                
+                em.getTransaction().commit();
+                
                 PersonDTO pDTO = new PersonDTO(person);
                 return pDTO;
             }
